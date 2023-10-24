@@ -23,6 +23,7 @@ NetCDFWriter::NetCDFWriter(const std::string& filename)
     ncfile.addVar("vy", netCDF::NcType::nc_DOUBLE, dims);
     ncfile.addVar("vz", netCDF::NcType::nc_DOUBLE, dims);
     ncfile.addVar("radius", netCDF::NcType::nc_DOUBLE, dims);
+    ncfile.addVar("energy", netCDF::NcType::nc_DOUBLE, dims);
 }
 
 NetCDFWriter::~NetCDFWriter()
@@ -35,7 +36,7 @@ void NetCDFWriter::writeParticles(ObjectManager& manager, int time_step)
     size_t num_particles = manager.getObjectCount();
     std::vector<double> xo(num_particles), yo(num_particles), zo(num_particles),
                          vx(num_particles), vy(num_particles), vz(num_particles),
-                         radius(num_particles);
+                         radius(num_particles), energy(num_particles);
     std::vector<std::string> names(num_particles);  
 
     for (size_t i = 0; i < num_particles; ++i) {
@@ -49,6 +50,7 @@ void NetCDFWriter::writeParticles(ObjectManager& manager, int time_step)
         vy[i] = particle.velocity.y;
         vz[i] = particle.velocity.z;
         radius[i] = particle.radius;
+        energy[i] = obj.getEnergy();
     }
 
     // Write to NetCDF variables
@@ -68,4 +70,5 @@ void NetCDFWriter::writeParticles(ObjectManager& manager, int time_step)
     ncfile.getVar("vy").putVar(startp, countp, vy.data());
     ncfile.getVar("vz").putVar(startp, countp, vz.data());
     ncfile.getVar("radius").putVar(startp, countp, radius.data());
+    ncfile.getVar("energy").putVar(startp, countp, energy.data());
 }
