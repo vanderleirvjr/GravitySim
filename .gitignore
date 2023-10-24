@@ -1,2 +1,4 @@
 .vscode
 postproc/animation.blend*
+bin/
+obj/
