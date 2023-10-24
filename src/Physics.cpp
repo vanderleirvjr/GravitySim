@@ -1,4 +1,5 @@
 #include "Physics.h"
+#include "Constants.h"
 #include <cmath>
 #include <iostream>
 
@@ -13,9 +14,7 @@ Physics::~Physics() {
 
 
 Force Physics::gravityForce(Object& obj) {
-    
-    const double G = 6.67430e-11;  // Gravitational constant
-    
+        
     Force force;
 
     force.x = 0;
@@ -46,6 +45,8 @@ Force Physics::gravityForce(Object& obj) {
 
         double F = G * m1 * m2 / (r * r);
 
+       // std::cout << "Force between particle " << i << " and the target particle: " << F << " N" << std::endl;
+
         force.x += F * dx / r;
         force.y += F * dy / r;
         force.z += F * dz / r;
@@ -58,8 +59,6 @@ Force Physics::gravityForce(Object& obj) {
 
 
 ObjectManager Physics::applyForces() {
-
-    double timeStep = 3600;
 
     size_t num_particles = manager.getObjectCount();
     
