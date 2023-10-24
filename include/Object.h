@@ -6,6 +6,7 @@ class Object {
 
 private:
     Particle particle;
+    double energy;
 
 public:
 
@@ -17,13 +18,9 @@ public:
 
     Particle getParticle() const;
 
-    void setName(const std::string& newName) {
-        particle.name = newName;
-    }
+    void setName(const std::string& newName);
 
-    std::string getName() const {
-        return particle.name;
-    } 
+    std::string getName() const;
 
     void setPosition(const Position& newPosition);
 
@@ -40,6 +37,10 @@ public:
     void setMass(const double newMass);
 
     double getMass() const;
+
+    void calculateEnergy();
+
+    double getEnergy() const;
 
     bool operator==(const Object& other) const;
 
