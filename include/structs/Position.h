@@ -31,4 +31,45 @@ struct Position {
         return result;
     }
 
+    Position operator+(const Position& pos) const {
+        Position result;
+        result.x = x + pos.x;
+        result.y = y + pos.y;
+        result.z = z + pos.z;
+        return result;
+    }
+
+
+    Position operator*(const Position& other) const {
+        Position result;
+        result.x = x * other.x;
+        result.y = y * other.y;
+        result.z = z * other.z;
+        return result;
+    }
+
+    Position operator/(double scalar) const {
+        if(scalar == 0) {
+            // Handle division by zero if needed
+            // For example, throw an exception or return a default value
+        }
+        
+        Position result;
+        result.x = x / scalar;
+        result.y = y / scalar;
+        result.z = z / scalar;
+        return result;
+    }
+
+
+    double sumComponents() const {
+        return x + y + z;
+    }
+
+    void setComponents(double newX, double newY, double newZ) {
+        x = newX;
+        y = newY;
+        z = newZ;
+    }
+
 };

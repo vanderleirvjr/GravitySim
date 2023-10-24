@@ -21,6 +21,19 @@ struct Velocity {
         return result;
     }
 
+    Velocity operator-(const Velocity& vel) const {
+        Velocity result;
+        result.x = x - vel.x;
+        result.y = y - vel.y;
+        result.z = z - vel.z;
+        return result;
+    }
+
+    void setComponents(double newX, double newY, double newZ) {
+        x = newX;
+        y = newY;
+        z = newZ;
+    }
 
     Velocity operator*(double scalar) const {
         Velocity result;
