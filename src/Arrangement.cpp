@@ -90,7 +90,7 @@ ObjectManager AddKuiperAsteroids(ObjectManager& manager, int numAsteroids) {
             vy,  // vy
             0,  // vz
             2e6,  // radius
-            1e18  // mass
+            1e20  // mass
         );
 
         Object asteroidObj(asteroid);
@@ -103,23 +103,93 @@ ObjectManager AddKuiperAsteroids(ObjectManager& manager, int numAsteroids) {
 
 
 
-ObjectManager Cube(ObjectManager& manager) {
+ObjectManager SaturnRings(ObjectManager& manager) {
 
-    int cubeSide = 6;  // 10 particles along each side of the cube
-    double spacing = 1e5;  // 1e7 units between each particle
+    Particle saturn;
+    saturn.setComponents(
+        "Saturn",
+        0,  // x
+        0,  // y
+        0,  // z
+        0,  // vx
+        0,  // vy
+        0,  // vz
+        5.8232e7,  // radius in meters
+        5.6834e26  // mass in kg
+    );
+    
+    Object saturnObj(saturn);
+    manager.addObject(saturnObj);
+    
+    int numRingParticles = 200;  // Number of particles in the ring
+    double innerRadius = 7.45e7;  // Inner radius in meters
+    double outerRadius = 1.367e8;  // Outer radius in meters
+    
+    for (int i = 0; i < numRingParticles; ++i) {
+        double distance = innerRadius + static_cast<double>(std::rand()) / (static_cast<double>(RAND_MAX / (outerRadius - innerRadius)));
+        double angle = static_cast<double>(std::rand()) / RAND_MAX * 2 * 3.14159;  // 0 to 2*pi radians
+    
+        // Calculate the radial velocity
+        double radial_velocity = std::sqrt(G * saturn.mass / distance);
+    
+        // Calculate the velocity components
+        double vx = -radial_velocity * std::sin(angle);
+        double vy = radial_velocity * std::cos(angle);
+    
+        Particle ringParticle;
+        ringParticle.setComponents(
+            "RingParticle" + std::to_string(i),
+            distance * std::cos(angle),  // x
+            distance * std::sin(angle),  // y
+            0,  // z
+            vx,  // vx
+            vy,  // vy
+            0,  // vz
+            1e4,  // radius
+            1e17  // mass
+        );
+    
+        Object ringParticleObj(ringParticle);
+        manager.addObject(ringParticleObj);
+    }
+
+
+    return manager;
+
+}
+
+
+
+ObjectManager Cube(ObjectManager& manager, int cubeSide, double spacing) {
+    
     
     for (int x = 0; x < cubeSide; ++x) {
         for (int y = 0; y < cubeSide; ++y) {
             for (int z = 0; z < cubeSide; ++z) {
                 Particle asteroid;
+
+                double xo = x * spacing;
+                double yo = y * spacing;
+                double zo = z * spacing;
+                
+                
+                // Calculate the velocity components, factoring in the random variation
+                double vx = -(0.8e2 + static_cast<double>(std::rand()) / RAND_MAX * (1.2e2 - 0.8e2));
+                double vy = 0.8e1 + static_cast<double>(std::rand()) / RAND_MAX * (1.2e1 - 0.8e1);
     
-                asteroid.setComponents("", x * spacing, y * spacing, z * spacing, 0, 0, 0, 8e3, 1e22);
+                asteroid.setComponents("", xo, yo, zo, vx, vy, 0, 2e3, 1e17);
                 Object obj(asteroid);
                 manager.addObject(obj);
             }
         }
 
     }
+
+    Particle asteroid;
+
+    asteroid.setComponents("", -cubeSide, -cubeSide, -cubeSide, 0, 0, 0, 4e3, 1e24);
+    Object obj(asteroid);
+    manager.addObject(obj);
 
     return manager;
 
