@@ -8,7 +8,7 @@ const double earthSunDist = 1.496e11;
 const double earthRadius = 6.371e6;
 const double earthYear = 31536000;
 
-const int historyInterval = 100;
-const int simulationSteps = 100000;
+const int historyInterval = 1;
+const int simulationSteps = 1440;
 
-const double timeStep = 8640;
+const double timeStep = 86400;
