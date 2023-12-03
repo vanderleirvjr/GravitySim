@@ -35,14 +35,17 @@ energy_max = np.max(energy)
 energy_normalized = (energy - energy_min) / (energy_max - energy_min)
 
 # Scale factor for visualization
-scale_factor = 1e3  # Adjust this as needed
+scale_factor = 2e10  # Adjust this as needed
 
 # Create Blender objects at initial positions
 created_objects = []
 initial_time_step = 0
 for i in range(num_particles):
+    
     bpy.ops.mesh.primitive_uv_sphere_add(
-        radius=radius[initial_time_step][i] / 2e3,
+        segments=16,  # Reduced number of segments
+        ring_count=8,      # Reduced number of rings
+        radius=radius[initial_time_step][i] / 3e7,
         location=(
             x[initial_time_step][i] / scale_factor,
             y[initial_time_step][i] / scale_factor,
@@ -52,6 +55,8 @@ for i in range(num_particles):
 
     # Get the created object
     obj = bpy.context.object
+    
+    bpy.ops.object.shade_smooth()  # Apply smooth shading
 
     # Create a material and assign a color based on energy
     mat = bpy.data.materials.new(name=f"EnergyMaterial_{i}")
